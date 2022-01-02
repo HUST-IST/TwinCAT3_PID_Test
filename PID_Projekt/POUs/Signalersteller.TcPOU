@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="Signalersteller" Id="{9a25eeab-27ae-46e3-b53c-a15047d8bcf4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Signalersteller
+
+VAR
+	TP_Timer: TP;
+	TON_Timer: TON;
+	PWM_On: BOOL := 0;
+	TP_Timer_Output: BOOL := 0;
+	TON_Timer_Output: BOOL := 0;
+	TON_Time: TIME;
+	TP_Time: TIME;
+	Timer_Start: BOOL := 1;
+	SignalToggle: BOOL := FALSE;
+	SignalPWM: INT;
+	MODE: INT := 1;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF TON_Time>=T#4S THEN
+	Timer_Start:=FALSE;
+END_IF
+TON_Timer(IN:= Timer_Start, PT:= T#4S, Q=> PWM_On, ET=> TON_Time);
+IF Timer_Start=FALSE THEN
+	Timer_Start:=TRUE;
+END_IF
+
+TP_Timer(IN:= PWM_On, PT:= T#2S, Q=> TP_Timer_Output, ET=> TP_Time);
+
+IF TP_Timer_Output THEN
+	GVL.MC_MoveAbsolute.Position := 5;
+ELSE GVL.MC_MoveAbsolute.Position := 0;
+END_IF
+
+//IF MODE=0 THEN
+//	MC_MoveAbsolute.Position := Signal;
+//ELSIF MODE = 1 THEN
+//	MC_MoveAbsolute.Position := SignalPWM;
+//END_IF
+
+//IF Signal >= 10 THEN
+//	SignalToggle := TRUE;
+//	SignalPWM := 10;
+//ELSIF Signal <= 0 THEN
+//	SignalToggle := FALSE;
+//	SignalPWM:=0;
+//END_IF
+
+//IF SignalToggle = FALSE THEN 
+//	Signal := Signal + 0.01;
+//ELSIF SignalToggle = TRUE THEN
+//	Signal := Signal - 0.01;
+//END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="Signalersteller">
+      <LineId Id="67" Count="12" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="81" Count="19" />
+      <LineId Id="80" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

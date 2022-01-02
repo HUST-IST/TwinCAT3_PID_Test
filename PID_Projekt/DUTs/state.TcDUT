@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <DUT Name="state" Id="{85b9a111-64c9-4594-81d3-778cc125adb4}">
+    <Declaration><![CDATA[TYPE state :
+(
+	INIT,
+	POWER_ON,
+	MOVE_ON,
+	ERROR,
+	P_RESET
+)UDINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
